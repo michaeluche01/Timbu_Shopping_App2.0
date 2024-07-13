@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timbu_api_app/screens/homescreen.dart';
+import 'package:timbu_api_app/screens/product_list_screen.dart';
 import 'package:timbu_api_app/themes/lightmode.dart';
 import 'providers/product_provider.dart';
 // import 'screens/product_list_screen.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         title: 'Timbu App',
         theme: lightMode,
         debugShowCheckedModeBanner: false,
-        home: const HomeScreen(),
+        home: const ProductListScreen(),
       ),
     );
   }
