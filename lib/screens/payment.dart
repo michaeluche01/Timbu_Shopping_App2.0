@@ -17,6 +17,9 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
   String? _selectedPayment;
   bool _isChecked = false;
   final _cardController = TextEditingController();
+  final _cvvController = TextEditingController();
+  final _expirationController = TextEditingController();
+  final _voucherController = TextEditingController();
 
   void removeFocus() {
     FocusScope.of(context).unfocus();
@@ -262,7 +265,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                           ),
                           const SizedBox(height: 10),
                           MyTextField(
-                            controller: _cardController,
+                            controller: _expirationController,
                             hintText: 'mm/yy',
                             obscureText: false,
                           ),
@@ -285,7 +288,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                           ),
                           const SizedBox(height: 10),
                           MyTextField(
-                            controller: _cardController,
+                            controller: _cvvController,
                             hintText: 'xxx',
                             obscureText: false,
                           ),
@@ -306,7 +309,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                 ),
                 const SizedBox(height: 10),
                 MyTextField(
-                  controller: _cardController,
+                  controller: _voucherController,
                   hintText: 'xxxxx',
                   obscureText: false,
                 ),

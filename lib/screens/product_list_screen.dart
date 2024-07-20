@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:timbu_api_app/models/product.dart';
 import 'package:timbu_api_app/providers/constants.dart';
-import 'package:timbu_api_app/utilities/bottombar.dart';
+import 'package:timbu_api_app/utilities/bottombar_container.dart';
 import '../providers/product_provider.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -35,25 +35,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ),
         elevation: 0,
         centerTitle: true,
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.arrow_back_ios,
-            size: 20.0,
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 18.0),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.chat_bubble_outline_rounded,
-                size: 24.0,
-              ),
-            ),
-          )
-        ],
       ),
       body: SafeArea(
         child: Column(
@@ -108,8 +89,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
       return formatter.format(price.toInt());
     }
 
-    // String imgUrl =
-    //     "$kimgurl/${product.photos.first.url}?organization_id=$korganizationId&Appid=$kappId&Apikey=$kapiKey";
+    String imgUrl =
+        "$kimgurl/${product.photos.first.url}?organization_id=$korganizationId&Appid=$kappId&Apikey=$kapiKey";
 
     // print(imgUrl);
 
@@ -121,7 +102,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: Image.network(
-              "$kimgurl/${product.photos.first.url}?organization_id=$korganizationId&Appid=$kappId&Apikey=$kapiKey",
+              imgUrl,
               width: 56.0,
               height: 56.0,
               fit: BoxFit.cover,

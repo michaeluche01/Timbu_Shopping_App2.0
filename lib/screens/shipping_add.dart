@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:timbu_api_app/providers/constants.dart';
 import 'package:timbu_api_app/screens/checkout_ship.dart';
 import 'package:timbu_api_app/screens/product_list_screen.dart';
+import 'package:timbu_api_app/utilities/custom_dropdown.dart';
 import 'package:timbu_api_app/utilities/my_button.dart';
 import 'package:timbu_api_app/utilities/my_textfield.dart';
 import 'package:timbu_api_app/utilities/region_dopdown.dart';
+import 'package:http/http.dart' as http;
 
 class ShippingAddress extends StatefulWidget {
   const ShippingAddress({super.key});
@@ -15,6 +19,51 @@ class ShippingAddress extends StatefulWidget {
 
 class _ShippingAddressState extends State<ShippingAddress> {
   final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _pcodeController = TextEditingController();
+  // final _shippingController = TextEditingController();
+  final _countryController = TextEditingController();
+  final _streetController = TextEditingController();
+  final _cityController = TextEditingController();
+
+  Future<void> insertShippingAddress() async {
+    if (_nameController.text != "" ||
+        _countryController.text != "" ||
+        _streetController.text != "" ||
+        _cityController.text != "" ||
+        _pcodeController.text != "" ||
+        _phoneController.text != "") {
+      try {
+        String uri =
+            'http://127.0.0.1/timbustore_api/insert_shipping_records.php';
+        var res = await http.post(Uri.parse(uri), body: {
+          "fullname": _nameController.text,
+          "country": _countryController.text,
+          "address": _streetController.text,
+          "city": _cityController.text,
+          "postalcode": _pcodeController.text,
+          "phone": _phoneController.text,
+        });
+
+        var response = jsonDecode(res.body);
+        if (response["success"] == "trus") {
+          print("Shipping Records Inserted --> GREAT jOB MICHAELUCHE");
+        } else {
+          print('Omooooo Error Encountered!!!');
+        }
+      } catch (e) {
+        print(e);
+      }
+    } else {
+      print('Please fill all required fields');
+    }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const CheckoutShip(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,11 +109,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 5),
-                MyTextField(
-                  controller: _nameController,
-                  hintText: 'Home',
-                  obscureText: false,
-                ),
+                const SippingTo(),
                 const SizedBox(height: 10),
                 const Text(
                   'Full Name *',
@@ -83,7 +128,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                 ),
                 const SizedBox(height: 5),
                 MyTextField(
-                  controller: _nameController,
+                  controller: _countryController,
                   hintText: 'Nigeria',
                   obscureText: false,
                 ),
@@ -94,7 +139,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                 ),
                 const SizedBox(height: 5),
                 MyTextField(
-                  controller: _nameController,
+                  controller: _streetController,
                   hintText: 'Street Address',
                   obscureText: false,
                 ),
@@ -105,7 +150,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                 ),
                 const SizedBox(height: 5),
                 MyTextField(
-                  controller: _nameController,
+                  controller: _cityController,
                   hintText: '',
                   obscureText: false,
                 ),
@@ -119,7 +164,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                   children: <Widget>[
                     Flexible(
                       child: MyTextField(
-                        controller: _nameController,
+                        controller: _pcodeController,
                         hintText: '',
                         obscureText: false,
                       ),
@@ -139,25 +184,52 @@ class _ShippingAddressState extends State<ShippingAddress> {
                 ),
                 const SizedBox(height: 5),
                 MyTextField(
-                  controller: _nameController,
+                  controller: _phoneController,
                   hintText: 'Enter your phone number',
                   obscureText: false,
                 ),
                 const SizedBox(height: 25),
-                MyButton(
-                    onTap: () => Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CheckoutShip(),
-                          ),
-                        ),
-                    buttonName: 'Save'),
+                MyButton(onTap: insertShippingAddress, buttonName: 'Save'),
                 const SizedBox(height: 10),
               ],
             ),
           ),
         )),
       ),
+    );
+  }
+}
+
+//Dropdown for shipping
+
+class SippingTo extends StatefulWidget {
+  const SippingTo({super.key});
+
+  @override
+  State<SippingTo> createState() => _SippingToState();
+}
+
+class _SippingToState extends State<SippingTo> {
+  String _selectedItem = '1';
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomDropdownField<String>(
+          label: 'Select shipping location',
+          value: _selectedItem,
+          items: const [
+            DropdownMenuItem(value: '1', child: Text('Home')),
+            DropdownMenuItem(value: '2', child: Text('Work')),
+          ],
+          onChanged: (value) {
+            setState(() {
+              _selectedItem = value!;
+            });
+          },
+        ),
+      ],
     );
   }
 }

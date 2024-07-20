@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="timbu_api_app"
+        android:label="Gadget Empire"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

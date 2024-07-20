@@ -4,30 +4,11 @@ import 'package:timbu_api_app/models/product.dart';
 import 'package:timbu_api_app/providers/constants.dart';
 
 class ApiService {
-  Future<String> login() async {
-    final response = await http.post(
-      Uri.parse('https://api.timbu.cloud/auth/login'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'email': 'michaelcee2000@gmail.com',
-        'password': 'Mike12345',
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      return data['access_token'];
-    } else {
-      throw Exception('Failed to login: ${response.statusCode}');
-    }
-  }
 
   Future<Product> fetchProducts() async {
     const url =
         '$kbaseUrl?organization_id=$korganizationId&reverse_sort=false&page=1&size=25&Appid=$kappId&Apikey=$kapiKey';
-    // const url =
-    //     '$baseUrl?organization_id=$organizationId&reverse_sort=false&page=1&size=25&appId=$appId&apiKey=$apiKey';
-
+    
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -67,3 +48,21 @@ class ApiService {
 
 // curl -H "Authorization: Bearer  ade3a017aae344c5b3f2fc32598cfd6e20240708233703962021" -H "Accept: application/json" https://api.timbu.cloud/products
 
+
+  // Future<String> login() async {
+  //   final response = await http.post(
+  //     Uri.parse('https://api.timbu.cloud/auth/login'),
+  //     headers: {'Content-Type': 'application/json'},
+  //     body: json.encode({
+  //       'email': 'michaelcee2000@gmail.com',
+  //       'password': 'Mike12345',
+  //     }),
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     final data = json.decode(response.body);
+  //     return data['access_token'];
+  //   } else {
+  //     throw Exception('Failed to login: ${response.statusCode}');
+  //   }
+  // }

@@ -1,51 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:timbu_api_app/providers/constants.dart';
-import 'package:timbu_api_app/screens/product_list_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    void nextPage() {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const ProductListScreen()));
-    }
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.secondary,
-      body: Center(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        automaticallyImplyLeading: false,
+        title: const Text(
+          'Home',
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
+        ),
+        elevation: 0,
+        centerTitle: true,
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 18.0),
+        //     child: IconButton(
+        //       onPressed: () {},
+        //       icon: const Icon(
+        //         Icons.chat_bubble_outline_rounded,
+        //         size: 24.0,
+        //       ),
+        //     ),
+        //   )
+        // ],
+      ),
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              kbusinessname,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 40,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 25),
-            ElevatedButton(
-              onPressed: nextPage,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.blue,
-                minimumSize: const Size(300, 60),
-                shape: const BeveledRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-              ),
-              child: const Text(
-                'Get Started',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
+            Text('HomePage'),
           ],
         ),
       ),
