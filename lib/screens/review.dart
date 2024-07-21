@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timbu_api_app/providers/constants.dart';
 import 'package:timbu_api_app/screens/checkout_ship.dart';
 import 'package:timbu_api_app/screens/payment.dart';
+import 'package:timbu_api_app/screens/product_list_screen.dart';
 import 'package:timbu_api_app/utilities/my_button.dart';
 
 class ReviewScreen extends StatefulWidget {
@@ -205,7 +206,13 @@ class _ReviewScreenState extends State<ReviewScreen> {
                                 ElevatedButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
-                                    // Add your continue shopping logic here
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ProductListScreen(),
+                                      ),
+                                    );
                                   },
                                   style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(

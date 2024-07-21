@@ -5,6 +5,7 @@ import 'package:timbu_api_app/screens/checkout_ship.dart';
 import 'package:timbu_api_app/screens/review.dart';
 import 'package:timbu_api_app/utilities/my_button.dart';
 import 'package:timbu_api_app/utilities/my_textfield.dart';
+import 'package:timbu_api_app/utilities/snackbar.dart';
 
 class PaymentCheckout extends StatefulWidget {
   const PaymentCheckout({super.key});
@@ -340,12 +341,15 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
 
                 const SizedBox(height: 50),
                 MyButton(
-                  onTap: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ReviewScreen(),
-                    ),
-                  ),
+                  onTap: () {
+                    showSnackbar(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ReviewScreen(),
+                      ),
+                    );
+                  },
                   buttonName: 'Confirm and continue',
                 ),
                 const SizedBox(height: 10),

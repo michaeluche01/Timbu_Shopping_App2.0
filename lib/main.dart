@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timbu_api_app/onboard_screen.dart';
+import 'package:timbu_api_app/providers/cart_provider.dart';
 import 'package:timbu_api_app/themes/lightmode.dart';
 import 'providers/product_provider.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductProvider()),
+         ChangeNotifierProvider(create: (_) => CartProvider()),
       ],
       child: MaterialApp(
         theme: lightMode,

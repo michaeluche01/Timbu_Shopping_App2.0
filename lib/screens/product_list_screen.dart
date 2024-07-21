@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:timbu_api_app/models/product.dart';
 import 'package:timbu_api_app/providers/constants.dart';
 import 'package:timbu_api_app/utilities/bottombar_container.dart';
+import '../providers/cart_provider.dart';
 import '../providers/product_provider.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -14,14 +15,6 @@ class ProductListScreen extends StatefulWidget {
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
-  // bool _showBottomBar = false;
-
-  // void _toggleBottomBar() {
-  //   setState(() {
-  //     _showBottomBar = !_showBottomBar;
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,39 +37,42 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 child: Consumer<ProductProvider>(
                   builder: (context, provider, child) {
                     return FutureBuilder(
-                        future: provider.fetchProducts(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            // Access products from snapshot.data (assuming it holds the data)
-                            final products = snapshot.data;
+                      future: provider.fetchProducts(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final products = snapshot.data;
 
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25.0),
-                              child: ListView.separated(
-                                itemCount: products!.items.length,
-                                itemBuilder: (context, index) {
-                                  final product = products.items[index];
-                                  return _buildProductItem(product);
-                                },
-                                separatorBuilder: (context, index) => Divider(
-                                  thickness: 1.5,
-                                  height: 1,
-                                  color: Colors.grey[300],
-                                ),
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                            child: ListView.separated(
+                              itemCount: products!.items.length,
+                              itemBuilder: (context, index) {
+                                final product = products.items[index];
+                                return _buildProductItem(product);
+                              },
+                              separatorBuilder: (context, index) => Divider(
+                                thickness: 1.5,
+                                height: 1,
+                                color: Colors.grey[300],
                               ),
-                            );
-                          } else {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        });
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    );
                   },
                 ),
               ),
             ),
-            const BottomBar(),
+            Consumer<CartProvider>(
+              builder: (context, cart, child) {
+                return BottomBar(totalPrice: cart.totalPrice);
+              },
+            ),
           ],
         ),
       ),
@@ -91,8 +87,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
     String imgUrl =
         "$kimgurl/${product.photos.first.url}?organization_id=$korganizationId&Appid=$kappId&Apikey=$kapiKey";
-
-    // print(imgUrl);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -117,7 +111,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   product.name,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                // Text(product.description),
                 Text(
                   '₦${product.currentPrice.isNotEmpty ? formatPrice(product.currentPrice.first.prices['NGN'][0]) : 'N/A'}',
                 ),
@@ -134,14 +127,18 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      // Decrease quantity
+                      context.read<CartProvider>().removeFromCart(product);
                     },
                     icon: const Icon(Icons.remove, size: 16),
                   ),
-                  const Text('1'), // This should be the current quantity
+                  Consumer<CartProvider>(
+                    builder: (context, cart, child) {
+                      return Text('${cart.getQuantity(product)}');
+                    },
+                  ),
                   IconButton(
                     onPressed: () {
-                      // Increase quantity
+                      context.read<CartProvider>().addToCart(product);
                     },
                     icon: const Icon(Icons.add, size: 16),
                   ),
@@ -149,7 +146,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  // Remove item
+                  context.read<CartProvider>().removeAllFromCart(product);
                 },
                 child: const Row(
                   children: [

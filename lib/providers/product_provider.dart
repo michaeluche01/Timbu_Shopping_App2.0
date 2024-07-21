@@ -12,17 +12,6 @@ class ProductProvider with ChangeNotifier {
   String get error => _error;
 
   Future<Product?> fetchProducts() async {
-    // _isLoading = true;
-    // notifyListeners();
-
-    // Product result = await ApiService().fetchProducts();
-
-    // _products = result;
-    // notifyListeners();
-    // print("omooooo ${products!.items.first.name}");
-    // print("omooooo $products");
-
-    // return products;
     try {
       _isLoading = true;
       // notifyListeners();
@@ -30,22 +19,17 @@ class ProductProvider with ChangeNotifier {
       // Call your API service to fetch products
       Product result = await ApiService().fetchProducts();
 
-      // Update products and loading state
       _products = result; // Assuming result.items is a List<Product>
       _isLoading = false;
 
-      // notifyListeners();
 
-      // Print statements for debugging
-      // print("Products: ${_products}");
-      // print("Loading state: $_isLoading");
+     
       notifyListeners();
       return _products;
     } catch (e) {
       // Handle error if fetching fails
       _isLoading = false;
       notifyListeners();
-      // print("Error fetching products: $e");
     }
   }
 }

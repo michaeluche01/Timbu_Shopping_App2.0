@@ -9,6 +9,7 @@ import 'package:timbu_api_app/utilities/my_button.dart';
 import 'package:timbu_api_app/utilities/my_textfield.dart';
 import 'package:timbu_api_app/utilities/region_dopdown.dart';
 import 'package:http/http.dart' as http;
+import 'package:timbu_api_app/utilities/snackbar.dart';
 
 class ShippingAddress extends StatefulWidget {
   const ShippingAddress({super.key});
@@ -35,7 +36,8 @@ class _ShippingAddressState extends State<ShippingAddress> {
         _phoneController.text != "") {
       try {
         String uri =
-            'http://127.0.0.1/timbustore_api/insert_shipping_records.php';
+            'http://localhost/timbustore_api/insert_shipping_records.php';
+
         var res = await http.post(Uri.parse(uri), body: {
           "fullname": _nameController.text,
           "country": _countryController.text,
@@ -57,6 +59,9 @@ class _ShippingAddressState extends State<ShippingAddress> {
     } else {
       print('Please fill all required fields');
     }
+
+    showSnackbar(context);
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -189,7 +194,10 @@ class _ShippingAddressState extends State<ShippingAddress> {
                   obscureText: false,
                 ),
                 const SizedBox(height: 25),
-                MyButton(onTap: insertShippingAddress, buttonName: 'Save'),
+                MyButton(
+                  onTap: insertShippingAddress,
+                  buttonName: 'Save',
+                ),
                 const SizedBox(height: 10),
               ],
             ),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:timbu_api_app/screens/shipping_add.dart';
 
 class BottomBar extends StatelessWidget {
-  const BottomBar({super.key});
+  final double totalPrice;
+  const BottomBar({super.key, required this.totalPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class BottomBar extends StatelessWidget {
                 style: TextStyle(color: Colors.grey),
               ),
               Text(
-                '₦7,800,000.00',
+                'Total: ₦${totalPrice.toStringAsFixed(2)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
